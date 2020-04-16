@@ -74,6 +74,13 @@ class ViewController: UIViewController {
         clear.translatesAutoresizingMaskIntoConstraints = false
         clear.setTitle("Clear", for: .normal)
         view.addSubview(clear)
+        
+        
+        // Add a view to host all the buttons
+        let buttonsView = UIView()
+        buttonsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(buttonsView)
+        
         // Using NSLayoutConstraint.activate() method instead of isActive = true
         // This is an array therefore comma needs to be applied
         NSLayoutConstraint.activate([
@@ -123,8 +130,18 @@ class ViewController: UIViewController {
             submit.heightAnchor.constraint(equalToConstant: 44),
             clear.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 100),
             clear.centerYAnchor.constraint(equalTo: submit.centerYAnchor),
-            clear.heightAnchor.constraint(equalToConstant: 44)
-
+            clear.heightAnchor.constraint(equalToConstant: 44),
+            
+            // Constraints for buttonsView
+            // width 750 height 320
+            // centered horizontally
+            // top anchor to be 20 points below the bottom of the submit button
+            // pin it to the bottom of our layout margins guide plus 20 points for space
+            buttonsView.widthAnchor.constraint(equalToConstant: 750),
+            buttonsView.heightAnchor.constraint(equalToConstant: 320),
+            buttonsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonsView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -20),
+            buttonsView.topAnchor.constraint(equalTo: submit.bottomAnchor, constant: 20)
             
         ])
         
