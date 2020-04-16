@@ -47,6 +47,17 @@ class ViewController: UIViewController {
         answersLabel.textAlignment = .right
         view.addSubview(answersLabel)
         
+        currentAnswer = UITextField()
+        currentAnswer.translatesAutoresizingMaskIntoConstraints = false
+        currentAnswer.placeholder = "Tap letters to guess"
+        // 居中
+        currentAnswer.textAlignment = .center
+        currentAnswer.font = UIFont.systemFont(ofSize: 44)
+        // Users can interact with the textfield so now it becomes a label with placeholder
+        currentAnswer.isUserInteractionEnabled = false
+        view.addSubview(currentAnswer)
+        
+        // Using a textfield rather than a label because there
         // Using NSLayoutConstraint.activate() method instead of isActive = true
         // This is an array therefore comma needs to be applied
         NSLayoutConstraint.activate([
@@ -79,13 +90,19 @@ class ViewController: UIViewController {
                 -100),
             
             // answers height anchor should be equal to clues height anchor
-            answersLabel.heightAnchor.constraint(equalTo: cluesLabel.heightAnchor)
+            answersLabel.heightAnchor.constraint(equalTo: cluesLabel.heightAnchor),
             
-            
+            // current answer should be centered in the view, but only 50% of the width, below the clues label 20 points
+            // can't use centerYAnchor because the labels might be overlapped
+            currentAnswer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            currentAnswer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+            currentAnswer.topAnchor.constraint(equalTo: cluesLabel.bottomAnchor, constant: 20)
         ])
         
         cluesLabel.backgroundColor = .red
         answersLabel.backgroundColor = .blue
+        
+        //
     }
     override func viewDidLoad() {
         super.viewDidLoad()
