@@ -11,6 +11,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    // Store things as properties allow you to make changes later on
     var cluesLabel: UILabel!
     var answersLabel: UILabel!
     var currentAnswer: UITextField!
@@ -21,6 +22,7 @@ class ViewController: UIViewController {
         view = UIView()
         view.backgroundColor = .white
         
+        // MARK: Labels
         // Placing the score label at the top right
         scoreLabel = UILabel()
         scoreLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -47,6 +49,7 @@ class ViewController: UIViewController {
         answersLabel.textAlignment = .right
         view.addSubview(answersLabel)
         
+        // MARK: Textfield
         currentAnswer = UITextField()
         currentAnswer.translatesAutoresizingMaskIntoConstraints = false
         currentAnswer.placeholder = "Tap letters to guess"
@@ -57,7 +60,20 @@ class ViewController: UIViewController {
         currentAnswer.isUserInteractionEnabled = false
         view.addSubview(currentAnswer)
         
-        // Using a textfield rather than a label because there
+        // MARK: Buttons
+        //1. Buttons have various built-in styles, but the ones you’ll most commonly use are .custom and .system. We want the default button style here, so we’ll use .system.
+        //2. We need to use setTitle() to adjust the title on the button, just like we did with setImage() in project 2.
+        
+        // These buttons are not properties since they won't change later
+        let submit = UIButton(type: .system)
+        submit.translatesAutoresizingMaskIntoConstraints = false
+        submit.setTitle("Submit", for: .normal)
+        view.addSubview(submit)
+        
+        let clear = UIButton(type: .system)
+        clear.translatesAutoresizingMaskIntoConstraints = false
+        clear.setTitle("Clear", for: .normal)
+        view.addSubview(clear)
         // Using NSLayoutConstraint.activate() method instead of isActive = true
         // This is an array therefore comma needs to be applied
         NSLayoutConstraint.activate([
@@ -96,7 +112,20 @@ class ViewController: UIViewController {
             // can't use centerYAnchor because the labels might be overlapped
             currentAnswer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             currentAnswer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-            currentAnswer.topAnchor.constraint(equalTo: cluesLabel.bottomAnchor, constant: 20)
+            currentAnswer.topAnchor.constraint(equalTo: cluesLabel.bottomAnchor, constant: 20),
+            
+            // set clear button's YAnchor constraint to the submit button, in that way if you move one of these buttons, the other one will move as well
+            // both buttons will be centered but 100 points apart to avoid overlapping
+            // force both buttons to have a height of 44 points in order to be touched easily
+            
+            submit.topAnchor.constraint(equalTo: currentAnswer.bottomAnchor),
+            submit.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -100),
+            submit.heightAnchor.constraint(equalToConstant: 44),
+            clear.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 100),
+            clear.centerYAnchor.constraint(equalTo: submit.centerYAnchor),
+            clear.heightAnchor.constraint(equalToConstant: 44)
+
+            
         ])
         
         cluesLabel.backgroundColor = .red
