@@ -17,6 +17,12 @@ class ViewController: UIViewController {
     var currentAnswer: UITextField!
     var scoreLabel: UILabel!
     var letterButtons = [UIButton]()
+    // An array to hold the buttons that are currently being used
+    var activatedButtons = [UIButton]()
+    // All possible answers
+    var solutions = [String]()
+    var score = 0
+    var level = 1
     
     override func loadView() {
         view = UIView()
@@ -81,6 +87,10 @@ class ViewController: UIViewController {
         buttonsView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(buttonsView)
         
+        
+        // Connect the buttons to some code
+        submit.addTarget(self, action: #selector(submitTapped), for: .touchUpInside)
+        clear.addTarget(self, action: #selector(clearTapped), for: .touchUpInside)
         // Using NSLayoutConstraint.activate() method instead of isActive = true
         // This is an array therefore comma needs to be applied
         NSLayoutConstraint.activate([
@@ -177,14 +187,75 @@ class ViewController: UIViewController {
                 
                 buttonsView.addSubview(letterButton)
                 letterButtons.append(letterButton)
+                letterButton.addTarget(self, action: #selector(letterTapped), for: .touchUpInside)
             }
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        loadLevel()
+        
+    }
+    
+    @objc func letterTapped(_ sender: UIButton) {
+    }
+    @objc func submitTapped(_ sender: UIButton) {
+    }
+    @objc func clearTapped(_ sender: UIButton) {
     }
     
     
+    func loadLevel() {
+        var clueString = ""
+        var solutionString = ""
+        var letterBits = [String]()
+        
+        if let levelFileURL = Bundle.main.url(forResource: "level\(level)", withExtension: "txt"){
+            
+            
+            if let levelContents = try?String(contentsOf: levelFileURL) {
+                var lines = levelContents.components(separatedBy: "\n")
+                
+                // Every time the level loads it is something else
+                lines.shuffle()
+                // Enumerated() loops through every item in the array
+                // line is the string in the lines array
+                for (index, line) in lines.enumerated() {
+                    let parts = line.components(separatedBy: ":")
+                    // The answer still have "|" in between
+                    let answer = parts[0]
+                    let clue = parts[1]
+                    
+                    // Example: 1. Ghosts in the residence
+                    // line break
+                    clueString += "\(index + 1).\(clue)\n"
+                    // Change all the "|" into ""
+                    let solutionWord = answer.replacingOccurrences(of: "|", with: "")
+                    solutionString += "\(solutionWord.count) letters\n"
+                    solutions.append(solutionWord)
+                    
+                    // Letter bits used on the button
+                    let bits = answer.components(separatedBy: "|")
+                    letterBits += bits
+                }
+                
+            }
+        }
+        // Configure the buttons and labels
+        // Remove the extra line break and white space from clueLabel and answersLabel
+        cluesLabel.text =
+        clueString.trimmingCharacters(in: .whitespacesAndNewlines)
+        answersLabel.text =
+        solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+        letterBits.shuffle()
+        
+        if letterBits.count == letterButtons.count {
+            for i in 0..<letterButtons.count {
+                // Set the title to letter bits
+                letterButtons[i].setTitle(letterBits[i], for: .normal)
+            }
+        }
+    }
 }
 

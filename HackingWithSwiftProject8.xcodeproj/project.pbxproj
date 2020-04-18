@@ -13,6 +13,7 @@
 		9C5D390624480569004C835E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C5D390424480569004C835E /* Main.storyboard */; };
 		9C5D39082448056D004C835E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C5D39072448056D004C835E /* Assets.xcassets */; };
 		9C5D390B2448056D004C835E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C5D39092448056D004C835E /* LaunchScreen.storyboard */; };
+		9C5D3933244B863E004C835E /* level1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9C5D3932244B863E004C835E /* level1.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		9C5D39072448056D004C835E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9C5D390A2448056D004C835E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C5D390C2448056D004C835E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C5D3932244B863E004C835E /* level1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level1.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				9C5D39072448056D004C835E /* Assets.xcassets */,
 				9C5D39092448056D004C835E /* LaunchScreen.storyboard */,
 				9C5D390C2448056D004C835E /* Info.plist */,
+				9C5D3932244B863E004C835E /* level1.txt */,
 			);
 			path = HackingWithSwiftProject8;
 			sourceTree = "<group>";
@@ -126,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C5D390B2448056D004C835E /* LaunchScreen.storyboard in Resources */,
+				9C5D3933244B863E004C835E /* level1.txt in Resources */,
 				9C5D39082448056D004C835E /* Assets.xcassets in Resources */,
 				9C5D390624480569004C835E /* Main.storyboard in Resources */,
 			);
