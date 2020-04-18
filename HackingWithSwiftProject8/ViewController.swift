@@ -147,8 +147,38 @@ class ViewController: UIViewController {
         
         cluesLabel.backgroundColor = .red
         answersLabel.backgroundColor = .blue
+        buttonsView.backgroundColor = .green
         
-        //
+        // if hugging priority is high that means auto layout prefers not to stretch it, vice versa
+        // high priorities mean auto layout works harder to satisfy them
+        // default hugging priority 250, default content compression resistance is 750
+        // first in line when auto layout decides which one to stretch (1<750)
+        cluesLabel.setContentHuggingPriority(UILayoutPriority(1),
+        for: .vertical)
+        answersLabel.setContentHuggingPriority(UILayoutPriority(1),
+        for: .vertical)
+        
+        
+        
+        // Set width and height for the buttons
+        let width = 150
+        let height = 80
+        
+        for row in 0..<4 {
+            for col in 0..<5 {
+                let letterButton = UIButton(type: .system)
+                // give the button a big font size
+                letterButton.titleLabel?.font = UIFont.systemFont(ofSize: 36)
+                // give some temporary text for us to see it on screen
+                letterButton.setTitle("WWW", for: .normal)
+                // position each button
+                let frame = CGRect(x: col * width, y: row * height, width: width, height: height)
+                letterButton.frame = frame
+                
+                buttonsView.addSubview(letterButton)
+                letterButtons.append(letterButton)
+            }
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
