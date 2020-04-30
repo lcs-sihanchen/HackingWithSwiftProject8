@@ -21,7 +21,12 @@ class ViewController: UIViewController {
     var activatedButtons = [UIButton]()
     // All possible answers
     var solutions = [String]()
-    var score = 0
+    // Update score label every time it changes
+    var score = 0 {
+       didSet {
+          scoreLabel.text = "Score: \(score)"
+       }
+    }
     var level = 1
     
     override func loadView() {
@@ -164,9 +169,9 @@ class ViewController: UIViewController {
         // default hugging priority 250, default content compression resistance is 750
         // first in line when auto layout decides which one to stretch (1<750)
         cluesLabel.setContentHuggingPriority(UILayoutPriority(1),
-        for: .vertical)
+                                             for: .vertical)
         answersLabel.setContentHuggingPriority(UILayoutPriority(1),
-        for: .vertical)
+                                               for: .vertical)
         
         
         
@@ -187,6 +192,7 @@ class ViewController: UIViewController {
                 
                 buttonsView.addSubview(letterButton)
                 letterButtons.append(letterButton)
+                // Every button calls the function "letterTapped"
                 letterButton.addTarget(self, action: #selector(letterTapped), for: .touchUpInside)
             }
         }
@@ -198,11 +204,67 @@ class ViewController: UIViewController {
         
     }
     
+    // Functions that are triggered by a UIButton
     @objc func letterTapped(_ sender: UIButton) {
+        // Make sure the button has a title, else return
+        guard let buttonTitle = sender.titleLabel?.text else {
+            return
+            
+        }
+        // Append current answer with the letter bits in the button
+        currentAnswer.text = currentAnswer.text?.appending(buttonTitle)
+        // Appends the button into the activated button array
+        activatedButtons.append(sender)
+        // Hide the button that is tapped
+        sender.isHidden = true
     }
     @objc func submitTapped(_ sender: UIButton) {
+        // Make sure there is an answer in currentAnswer textfield
+        // Return a message here?
+        guard let answerText = currentAnswer.text else { return }
+        // If find the correct answer in the solutions array, then run the code, else return
+        if let solutionPosition = solutions.firstIndex(of: answerText) {
+            // If your answer is correct, then you don't have to re-show
+            activatedButtons.removeAll()
+            
+            // Store each line of the "7 letters" into an array
+            var splitAnswers = answersLabel.text?.components(separatedBy: "\n")
+            
+            // Replace the "7 letters" with the current answer
+            splitAnswers?[solutionPosition] = answerText
+            // Put the array back to a string after changing the answerText using joined method
+            answersLabel.text = splitAnswers?.joined(separator: "\n")
+            // Clear currentAnswer
+            currentAnswer.text = ""
+            // Answer is correct
+            score += 1
+            // Every 7 correct answers bring you to the next level
+            if score % 7 == 0 {
+                let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
+                present(ac, animated: true)
+            }
+        }
+    }
+    
+    func levelUp(action: UIAlertAction) {
+        level += 1
+        solutions.removeAll(keepingCapacity: true)
+        loadLevel()
+        
+        for btn in letterButtons {
+            btn.isHidden = false
+        }
     }
     @objc func clearTapped(_ sender: UIButton) {
+        // Clear text
+        currentAnswer.text = ""
+        // Re-show the button
+        for btn in activatedButtons {
+            btn.isHidden = false
+        }
+        // Remove all elements in activatedButtons array
+        activatedButtons.removeAll()
     }
     
     
@@ -245,11 +307,12 @@ class ViewController: UIViewController {
         // Configure the buttons and labels
         // Remove the extra line break and white space from clueLabel and answersLabel
         cluesLabel.text =
-        clueString.trimmingCharacters(in: .whitespacesAndNewlines)
+            clueString.trimmingCharacters(in: .whitespacesAndNewlines)
         answersLabel.text =
-        solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+            solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
         letterBits.shuffle()
         
+        // Make sure the process won't fail
         if letterBits.count == letterButtons.count {
             for i in 0..<letterButtons.count {
                 // Set the title to letter bits
